@@ -10,6 +10,14 @@ Normal `npm run dev` and `npm run build` retain the ASP.NET Core API and SQL Ser
 
 ## Cloudflare Pages settings
 
+### Existing Workers deployment
+
+The founder's current site is `https://woodstop.nikita1984.workers.dev`, which uses Workers static assets rather than Pages. This can serve the same static sample; no migration to Pages is necessary. Use `apps/web` as the root directory, `npm ci && npm run build:sample` as the build command, and `npx wrangler deploy` as the deploy command. Keep the Geoapify key in build variables, not only runtime bindings. `apps/web/wrangler.jsonc` explicitly selects `dist`, SPA fallback, and a sample rebuild during deployment to prevent publishing the ordinary API-backed build.
+
+A live check found the site serving `index-ChUJ56Rv.js`, the ordinary API build; its `/api/stands` requests returned HTML rather than data. This is the diagnosed cause of missing samples. After pushing the config and redeploying, verify that the site loads seven initial listings without `/api` requests and that stand-link refresh works. The live fix is not verified until that deployment completes.
+
+The Pages-specific setup below remains an alternative. Workers preview/rollback controls differ from Pages; use the existing Worker's Versions & Deployments controls rather than creating a second project merely to fix the build mode.
+
 Push the prepared changes to `NikitaGolovko/woodstop`, then create a **Pages** project using **Connect to Git**, granting Cloudflare access to this repository only.
 
 | Setting | Value |
