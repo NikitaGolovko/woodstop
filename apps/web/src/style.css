@@ -58,3 +58,35 @@
   .finder-main { padding-top: 20px; }
   .finder-heading h1 { margin-bottom: 16px; }
 }
+
+/* Shared site frame. Keep navigation and legal details quiet. */
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.site-header, .site-footer, main { width: 100%; }
+.site-header, main { margin-block: 0; margin-inline: auto; }
+.site-header .brand img { width: 100px; height: 76px; }
+.site-header nav a { font-size: 14px; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.site-footer {
+  max-width: 1120px;
+  margin: auto auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 32px;
+  padding-block: 18px;
+  line-height: 1.5;
+}
+.copyright { white-space: nowrap; }
+.site-footer p { flex: 1; min-width: min(100%, 260px); margin: 0; }
+.nearby-list h3 a { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.secondary:hover, .destination-results button:hover { background: var(--sage); }
+@media (max-width: 640px) {
+  .site-header .brand img { width: 90px; height: 68px; }
+  .site-footer { flex-direction: column; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

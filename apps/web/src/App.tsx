@@ -9,6 +9,7 @@ export type Stand = {
   paymentMethods: string | null; paymentObservedAt: string | null; locationVerifiedAt: string; isDemo: boolean;
 };
 const date = (value: string) => new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(value));
+const copyrightYear = new Intl.DateTimeFormat('en-US', { year: 'numeric', timeZone: 'America/New_York' }).format(new Date());
 const directions = (s: Stand) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${s.latitude},${s.longitude}`)}`;
 
 export function StandPage({ stand: s }: { stand: Stand }) {
@@ -20,13 +21,13 @@ export function StandPage({ stand: s }: { stand: Stand }) {
     </section>
     <div className="details-grid"><section className="card"><h2>Before you stop</h2>
       <dl><div><dt>Price</dt><dd>{s.price === null ? 'Price unknown' : `${new Intl.NumberFormat('en-US', { style: 'currency', currency: s.currency }).format(s.price)} per ${s.priceUnit}`}</dd>
-        {s.priceObservedAt && <small>Observed {date(s.priceObservedAt)}</small>}</div>
-      <div><dt>Payment</dt><dd>{s.paymentMethods ?? 'Payment methods unknown'}</dd>{s.paymentObservedAt && <small>Observed {date(s.paymentObservedAt)}</small>}</div>
+        {s.priceObservedAt && <small>Observed <time dateTime={s.priceObservedAt}>{date(s.priceObservedAt)}</time></small>}</div>
+      <div><dt>Payment</dt><dd>{s.paymentMethods ?? 'Payment methods unknown'}</dd>{s.paymentObservedAt && <small>Observed <time dateTime={s.paymentObservedAt}>{date(s.paymentObservedAt)}</time></small>}</div>
       <div><dt>Availability</dt><dd>Current stock unknown</dd><small>Stock and prices can change. No inventory is guaranteed.</small></div></dl>
     </section><section className="card visit"><h2>Find the stand</h2>
       <p>{s.accessNotes ?? 'Access details and opening hours are unknown.'}</p>
       <p className="coordinates">{s.latitude.toFixed(5)}, {s.longitude.toFixed(5)}</p>
-      <small>{s.isDemo ? 'Example location date' : 'Location verified'} {date(s.locationVerifiedAt)}</small>
+      <small>{s.isDemo ? 'Example location date' : 'Location verified'} <time dateTime={s.locationVerifiedAt}>{date(s.locationVerifiedAt)}</time></small>
       <a className="button" href={directions(s)} target="_blank" rel="noreferrer">{s.isDemo ? 'Preview directions link ↗' : 'Get directions ↗'}</a>
       <small>Opens Google Maps. Navigation may need a connection.</small>
     </section></div>
@@ -52,11 +53,11 @@ export function App() {
     return () => controller.abort();
   }, [id, attempt]);
   useEffect(() => { document.title = stand ? `${stand.name} | Woodstop` : 'Woodstop — Find firewood near you'; }, [stand]);
-  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/" aria-label="Woodstop home"><img src={logo} alt="woodstop" /></a></header>
+  return <><a className="skip" href="#main">Skip to content</a><header className="site-header"><a className="brand" href="/" aria-label="Woodstop home"><img src={logo} alt="woodstop" width="100" height="76" /></a>{id && <nav aria-label="Main navigation"><a href="/">Browse stands</a></nav>}</header>
     <main id="main" className={!id ? 'finder-main' : undefined}>{!id ? <Discovery /> :
       state === 'loading' ? <p role="status" className="message">Loading stand details…</p> :
       state === 'missing' ? <section className="message"><h1>Stand not found</h1><p>This listing may have been removed or is not publicly available.</p><a href="/">Back to Woodstop</a></section> :
       state === 'error' ? <section className="message" role="alert"><h1>We couldn’t load this stand</h1><p>Check your connection and try again.</p><button className="button" onClick={() => setAttempt(a => a + 1)}>Try again</button></section> :
       stand && <StandPage stand={stand}/>}
-    </main><footer>{id ? 'woodstop · Less searching. More time by the fire.' : 'Listings may be incomplete or inaccurate. Buy local and check your destination’s firewood guidance.'}</footer></>;
+    </main><footer className="site-footer"><span className="copyright">© {copyrightYear} Woodstop</span>{!id && <p>Listings may be incomplete or inaccurate. Buy local and check your destination’s firewood guidance.</p>}</footer></>;
 }
