@@ -5,7 +5,6 @@ test('reads the seeded stand through the real API and opens accurate directions'
   await page.goto(path);
   await expect(page.getByRole('heading', { name: 'Pine Bend Firewood — demo' })).toBeVisible();
   await expect(page.getByText('$6.00 per bundle')).toBeVisible();
-  await expect(page.getByText('Development preview · Fictional stand. Do not travel to this location.')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Preview directions link' })).toHaveAttribute('href', 'https://www.google.com/maps/dir/?api=1&destination=43.98%2C-71.12');
   await expect(page.getByText('Current stock unknown')).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBeTruthy();

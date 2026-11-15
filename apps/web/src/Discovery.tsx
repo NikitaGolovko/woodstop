@@ -97,7 +97,7 @@ export function Discovery() {
         <div><h3><a href={`/stands/${stand.id}`}>{stand.name}</a></h3><p>{[stand.town, stand.state].filter(Boolean).join(', ')} · {distanceMiles.toFixed(1)} miles straight-line</p>
         <p>{stand.price === null ? 'Price unknown' : `${new Intl.NumberFormat('en-US', { style: 'currency', currency: stand.currency }).format(stand.price)} per ${stand.priceUnit}`} · Stock unknown</p>
         {stand.operatingStatus === 'seasonal' && <p>Seasonal · Dates unknown</p>}
-        {stand.isDemo && <p className="demo-label">Fictional demo stand. Do not travel to this location.</p>}</div>
+        </div>
       </li>)}</ul>
     </section>
     </div>

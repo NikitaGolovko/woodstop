@@ -8,7 +8,7 @@ Copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_GEOAPIFY_API
 
 The root page now opens discovery. Without a key, map/search explains its configuration state and list discovery remains available. Searches run only on submission, go directly to Geoapify and offer up to five destination choices. Use my location is the only implemented action requesting location; nothing requests permission on launch. Geoapify tiles/search require a connection. There is no offline map support.
 
-`GET /api/stands?latitude=43.68&longitude=-70.44&radiusMiles=10` returns nearest-first public reference stands and straight-line mile distances. Radius defaults to 10 miles, with a technical maximum of 100; at most 200 items are returned with a truncation flag. SQL Server geography computes distances in meters. No schema migration is needed for this slice. The fictional seed lies outside the initial Southern Maine search radius, so an empty initial list is expected. Search around its coordinates (43.98, -71.12) using the map or location to exercise it.
+`GET /api/stands?latitude=43.68&longitude=-70.44&radiusMiles=10` returns nearest-first public reference stands and straight-line mile distances. Radius defaults to 10 miles, with a technical maximum of 100; at most 200 items are returned with a truncation flag. SQL Server geography computes distances in meters. No schema migration is needed for this slice. The development seed includes seven fictional Southern Maine stands inside the initial radius and two farther north toward Raymond/Casco; widening to 25 miles includes those too. Close pairs exercise clustering, and samples mix priced/unknown facts and seasonal/active status. Seasonal dates remain unimplemented. The original Conway reference at (43.98, -71.12) is unchanged.
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ Configure the local connection through user-secrets as shown above; do not assum
 
 On November 15 the existing `WoodstopDevelopment.mdf` and log files were present but detached from LocalDB. They were reattached without replacing data or applying a new migration. If this recurs, inspect the instance and existing files before creating a replacement database.
 
-Migrations are explicit; API startup never creates or migrates databases. Review `docs/initial-migration.sql` for the initial schema. The demo command works only in Development and adds one stable-ID fictional record; rerunning does not overwrite data. Do not seed a real deployment.
+Migrations are explicit; API startup never creates or migrates databases. Review `docs/initial-migration.sql` for the initial schema. The `--seed-demo` command works only in Development and inserts any missing members of the ten stable-ID fictional records (the original Conway stand plus nine Maine samples). Rerunning does not duplicate records or overwrite local edits, including visibility changes. All samples have `IsDemo = true`, demo names, and fictional-data notices; their pins are not advertised sellers or verified sale locations. Do not seed a real deployment.
 
 ## Run locally
 

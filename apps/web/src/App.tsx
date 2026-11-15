@@ -14,7 +14,6 @@ const directions = (s: Stand) => `https://www.google.com/maps/dir/?api=1&destina
 
 export function StandPage({ stand: s }: { stand: Stand }) {
   return <>
-    {s.isDemo && <aside className="demo">Development preview · Fictional stand. Do not travel to this location.</aside>}
     <section className="stand-heading"><span className="eyebrow">ROADSIDE FIREWOOD</span>
       <h1>{s.name}</h1><p className="location">{s.town}, {s.state}{s.operatingStatus === 'seasonal' && ' · Seasonal stand'}</p>
       <p className="intro">{s.description}</p>

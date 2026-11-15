@@ -25,7 +25,7 @@ public sealed class StandTests : IAsyncLifetime
         using var scope = factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<WoodstopDbContext>();
         await db.Database.MigrateAsync();
-        await DemoSeed.RunAsync(db);
+        await DemoSeed.RunAsync(db, includeDiscovery: false);
     }
 
     [Fact]
@@ -129,6 +129,24 @@ public sealed class StandTests : IAsyncLifetime
     public async Task NearbySearchRejectsInvalidBounds(string query)
     {
         Assert.Equal(HttpStatusCode.BadRequest, (await client.GetAsync($"/api/stands?{query}")).StatusCode);
+    }
+
+    [Fact]
+    public async Task DiscoverySeedIsRepeatableAndPopulatesTheInitialMapWithoutOverwritingEdits()
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<WoodstopDbContext>();
+        await DemoSeed.RunAsync(db);
+        var stand = await db.Stands.SingleAsync(s => s.Id == DemoSeed.Id);
+        stand.AccessNotes = "Retain this local edit";
+        await db.SaveChangesAsync();
+        await DemoSeed.RunAsync(db);
+        Assert.Equal(10, await db.Stands.CountAsync());
+        Assert.True(await db.Stands.AllAsync(s => s.IsDemo));
+        await db.Entry(stand).ReloadAsync();
+        Assert.Equal("Retain this local edit", stand.AccessNotes);
+        var response = await client.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/stands?latitude=43.68&longitude=-70.44");
+        Assert.Equal(7, response.GetProperty("items").GetArrayLength());
     }
 
     public async Task DisposeAsync()
