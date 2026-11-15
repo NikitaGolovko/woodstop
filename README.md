@@ -24,11 +24,11 @@ SQL Server integration tests live in `tests/api/`; browser tests live in `apps/w
 
 ## Current state
 
-The first stand-detail slice is implemented: React loads a public stand through the ASP.NET Core API from SQL Server geography-backed storage. A development-only fictional seed, explicit EF migrations, directions links, dated/unknown facts, visibility checks, and desktop/mobile browser tests are included. Nearby search, map discovery, real stand data, authentication and deployment are still pending. See local development to run the preview.
+The stand-detail reference and discovery foundation are implemented: MapLibre/Geoapify map and destination search, map/list views, explicit geolocation, radius widening, clustered markers, and nearest-first SQL Server geography-backed reads. A Geoapify browser key is needed for map/search; list browsing works without it. The seed remains fictional. Real data, curated anchors, confirmation/season features, drafts, accounts, moderation and deployment remain pending. See local development for setup and limits.
 
 ## Current planning decisions
 
-**Development remains paused until explicitly resumed.** All agreed product decisions are consolidated in [MVP scope](docs/mvp.md), November 8, 2026. Planned behavior is distinct from the implemented fictional stand-detail reference above.
+**Local development resumed November 15, 2026**, with MapLibre and Geoapify selected by the founder. [MVP scope](docs/mvp.md) remains authoritative; planned behavior below is distinct from implemented behavior. Retain Save a stand and ignore the wireframe's Local Listing Editor for now.
 
 - Web-first, Southern Maine initial view and seeding, with submissions allowed everywhere.
 - Road map, town/campsite/park/address destination search, 10-mile default radius, curated major Maine destination anchors and clustered stand pins. No terrain/satellite or along-route search.
@@ -42,4 +42,4 @@ The first stand-detail slice is implemented: React loads a public stand through 
 - Notification boundary/stub now; provider/delivery later. Dashboard status does not depend on delivery.
 - Pilot learning targets: 20 approved Southern Maine stands, five nonfounder contributors and four of five testers completing discovery/directions without help; these are not hard release gates.
 
-Remaining work is technical design/provider evaluation and editorial destination selection; see [architecture](docs/architecture.md) and [implementation plan](docs/implementation-plan.md). The October 18 platform plan is historical reference, not the current release checklist. No code, schema, cloud setup or deployment is authorized by this documentation consolidation.
+Remaining work includes provider evaluation with a configured key, editorial destinations and later MVP slices; see [architecture](docs/architecture.md) and [implementation plan](docs/implementation-plan.md). The October 18 platform plan is historical reference. Local implementation is authorized; cloud setup and deployment require separate direction.

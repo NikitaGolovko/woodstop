@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Woodstop preview wireframes</title>
+</head>
+<body>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
+  #woodstop-wireframes {
+    color-scheme: light dark;
+    --page: light-dark(#f7f5ef, #16251d);
+    --paper: light-dark(#fffefa, #21342a);
+    --ink: light-dark(#263c30, #f0f3eb);
+    --muted: light-dark(#58665b, #bac8bb);
+    --line: light-dark(#dbdfd5, #40554a);
+    --sage: light-dark(#eaf0e3, #293f33);
+    --brand: light-dark(#99522f, #eeae86);
+    --pine: #234d38;
+    color: var(--ink);
+    font: 14px/1.4 'DM Sans', system-ui, sans-serif;
+  }
+  #woodstop-wireframes * { box-sizing: border-box; }
+  #woodstop-wireframes [hidden] { display: none !important; }
+  #woodstop-wireframes .screens, #woodstop-wireframes .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  #woodstop-wireframes .preview-controls { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 0 92px 12px 0; }
+  #woodstop-wireframes .preview { container-type: inline-size; }
+  #woodstop-wireframes .preview[data-size="phone"] { width: min(100%, 390px); margin-inline: auto; }
+  #woodstop-wireframes button, #woodstop-wireframes input, #woodstop-wireframes textarea {
+    font: inherit; color: inherit; border: 1px solid var(--line); background: var(--paper); border-radius: 8px; min-height: 42px; padding: 8px 12px;
+  }
+  #woodstop-wireframes button:focus-visible, #woodstop-wireframes input:focus-visible, #woodstop-wireframes textarea:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  #woodstop-wireframes button[aria-pressed="true"] { background: var(--sage); border-color: var(--muted); }
+  #woodstop-wireframes .primary { background: var(--pine); color: #fffefa; border-color: light-dark(#234d38, #7da58e); font-weight: 700; }
+  #woodstop-wireframes .shell { background: var(--page); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  #woodstop-wireframes header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 12px 18px; border-bottom: 1px solid var(--line); background: var(--paper); }
+  #woodstop-wireframes .wordmark { color: var(--brand); font: 800 23px/1 'Manrope', system-ui, sans-serif; letter-spacing: -.04em; }
+  #woodstop-wireframes h2, #woodstop-wireframes h3, #woodstop-wireframes p { color: inherit; margin: 0; }
+  #woodstop-wireframes h2 { font: 800 24px/1.2 'Manrope', system-ui, sans-serif; }
+  #woodstop-wireframes h3 { font: 800 18px/1.3 'Manrope', system-ui, sans-serif; }
+  #woodstop-wireframes .muted { color: var(--muted); font-size: 13px; }
+  #woodstop-wireframes .body { padding: 18px; display: grid; gap: 14px; }
+  #woodstop-wireframes .split { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 12px; align-items: start; }
+  #woodstop-wireframes .panel { padding: 15px; border-radius: 10px; border: 1px solid var(--line); background: var(--paper); display: grid; gap: 10px; min-width: 0; }
+  #woodstop-wireframes .location-choice { display: grid; gap: 10px; align-content: start; }
+  #woodstop-wireframes .location-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  #woodstop-wireframes .map {
+    background-color: var(--sage);
+    background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px), linear-gradient(var(--line) 1px, transparent 1px);
+    background-size: 32px 32px; min-height: 250px; border: 1px solid var(--line); border-radius: 10px; position: relative; overflow: hidden;
+  }
+  #woodstop-wireframes .map-label { position: absolute; bottom: 10px; left: 10px; padding: 4px 8px; border-radius: 5px; background: var(--paper); }
+  #woodstop-wireframes .pin { position: absolute; transform: translate(-50%, -50%); min-width: 44px; border-radius: 24px; font-weight: 700; }
+  #woodstop-wireframes .pin[aria-pressed="true"] { color: #fffefa; background: var(--pine); border-color: light-dark(#234d38, #7da58e); }
+  #woodstop-wireframes .p1 { top: 38%; left: 36%; }
+  #woodstop-wireframes .p2 { top: 64%; left: 67%; }
+  #woodstop-wireframes .stand-list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  #woodstop-wireframes .stand-list button { width: 100%; text-align: left; }
+  #woodstop-wireframes .detail { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
+  #woodstop-wireframes .map-hint { display: none; }
+  #woodstop-wireframes label { display: grid; gap: 5px; font-weight: 600; }
+  #woodstop-wireframes input, #woodstop-wireframes textarea { width: 100%; font-weight: 400; min-width: 0; }
+  #woodstop-wireframes .field-status:empty { display: none; }
+  #woodstop-wireframes .status { display: inline-block; justify-self: start; background: var(--sage); padding: 4px 8px; border-radius: 5px; }
+  @container (max-width: 600px) {
+    #woodstop-wireframes .split { grid-template-columns: minmax(0, 1fr); }
+    #woodstop-wireframes .map { min-height: 190px; }
+    #woodstop-wireframes [data-results].split { gap: 0; }
+    #woodstop-wireframes [data-results].split .map { min-height: 245px; border-radius: 10px 10px 0 0; }
+    #woodstop-wireframes [data-results].split .panel { border-radius: 0 0 10px 10px; border-top: 0; }
+    #woodstop-wireframes [data-results].split .stand-list { display: none; }
+    #woodstop-wireframes [data-results].split .detail { border: 0; padding: 0; }
+    #woodstop-wireframes [data-results].split:not([data-pin-picked]) .detail { display: none; }
+    #woodstop-wireframes [data-results].split:not([data-pin-picked]) .map-hint { display: block; }
+    #woodstop-wireframes [data-results].split:not([data-pin-picked]) .pin { color: var(--ink); background: var(--paper); border-color: var(--line); }
+    #woodstop-wireframes .preview[data-size="phone"] .shell { min-block-size: clamp(610px, 188cqi, 740px); }
+    #woodstop-wireframes .preview[data-size="phone"] [data-results].split .map { min-block-size: clamp(330px, 107cqi, 420px); }
+  }
+  @media (max-width: 600px) {
+    #woodstop-wireframes .preview-controls { margin-right: 0; }
+  }
+  @media (pointer: coarse) {
+    #woodstop-wireframes button { min-height: 44px; }
+    #woodstop-wireframes input, #woodstop-wireframes textarea { font-size: 16px; }
+  }
+</style>
+<div id="woodstop-wireframes">
+  <div class="preview-controls">
+    <nav class="screens" aria-label="Wireframe screens">
+      <button type="button" data-screen="browse" aria-pressed="true">Browse</button>
+      <button type="button" data-screen="suggest" aria-pressed="false">Suggest a stand</button>
+      <button type="button" data-screen="editor" aria-pressed="false">Local editor</button>
+    </nav>
+    <div class="actions" role="group" aria-label="Screen size">
+      <button type="button" data-size-button="phone" aria-pressed="true">Phone</button>
+      <button type="button" data-size-button="desktop" aria-pressed="false">Desktop</button>
+    </div>
+  </div>
+  <div class="preview" data-size="phone">
+  <section class="shell" data-panel="browse" aria-label="Browse stands">
+    <header><span class="wordmark">woodstop</span><button type="button" data-go="suggest">Suggest a stand</button></header>
+    <div class="body">
+      <h2>Find firewood near you.</h2>
+      <div class="actions">
+        <span class="muted">Southern Maine · Sample listings</span>
+        <button type="button" data-view="map" aria-pressed="true">Map</button>
+        <button type="button" data-view="list" aria-pressed="false">List</button>
+      </div>
+      <div class="split" data-results>
+        <div class="map" data-browse-map role="group" aria-label="Map layout with sample locations">
+          <button type="button" class="pin p1" data-stand="pine" aria-label="Pine Bend Firewood" aria-pressed="true"><i data-lucide="map-pin" aria-hidden="true"></i><span aria-hidden="true">1</span></button>
+          <button type="button" class="pin p2" data-stand="brook" aria-label="Brook Road Bundle Stand" aria-pressed="false"><i data-lucide="map-pin" aria-hidden="true"></i><span aria-hidden="true">2</span></button>
+          <span class="map-label muted">Map placeholder</span>
+        </div>
+        <aside class="panel">
+          <p class="map-hint muted">Tap a pin to see stand details.</p>
+          <ul class="stand-list" aria-label="Listed stands">
+            <li data-pine-row><button type="button" data-stand="pine" aria-pressed="true" data-pine-name>Pine Bend Firewood</button></li>
+            <li><button type="button" data-stand="brook" aria-pressed="false">Brook Road Bundle Stand</button></li>
+          </ul>
+          <div class="detail">
+            <h3 data-stand-title>Pine Bend Firewood</h3>
+            <p class="muted" data-stand-facts>Buxton, ME</p>
+            <div class="actions">
+              <button type="button" class="primary" data-directions>Get directions</button>
+              <button type="button" data-go="suggest" data-correction>Report an issue</button>
+            </div>
+            <p class="muted field-status" data-directions-status role="status"></p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+  <section class="shell" data-panel="suggest" aria-label="Suggest a stand" hidden>
+    <header><span class="wordmark">woodstop</span><button type="button" data-go="browse">Back to map</button></header>
+    <div class="body">
+      <h2 data-suggest-title>Suggest a stand</h2>
+      <p class="muted" data-suggest-note>We’ll review the suggestion before it appears on the map.</p>
+      <form class="split" data-suggestion>
+        <div class="panel location-choice" data-location-choice>
+          <h3>Stand location</h3>
+          <div class="location-options" role="group" aria-label="How to share the location">
+            <button type="button" data-location-method="pin" aria-controls="woodstop-location-pin" aria-pressed="false">Drop a pin</button>
+            <button type="button" data-location-method="link" aria-controls="woodstop-location-link" aria-pressed="false">Paste a map link</button>
+          </div>
+          <div class="map" id="woodstop-location-pin" data-suggest-map role="group" aria-label="Map pin picker placeholder" hidden>
+            <button type="button" class="pin p1" data-drop>Drop pin</button>
+            <span class="map-label muted">Map placeholder</span>
+          </div>
+          <label id="woodstop-location-link" hidden>Map link<input type="url" name="mapLink" placeholder="https://…" disabled></label>
+        </div>
+        <div class="panel">
+          <label data-description-label><span>Name or short description</span><textarea name="description" rows="2" required></textarea></label>
+          <label>Reply email (optional)<input name="replyEmail" type="email"></label>
+          <button type="submit" class="primary">Send suggestion</button>
+          <p class="muted field-status" data-send-status role="status"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+  <section class="shell" data-panel="editor" aria-label="Local listing editor" hidden>
+    <header><span class="wordmark">woodstop</span><span class="muted">Local listing editor</span></header>
+    <div class="body">
+      <h2>Edit a listing</h2>
+      <form class="split" data-editor>
+        <div class="map" role="group" aria-label="Listing pin picker placeholder">
+          <button type="button" class="pin p1" data-move>Move pin</button>
+          <span class="map-label muted">Map placeholder</span>
+        </div>
+        <div class="panel">
+          <p class="status" data-publication role="status">Published</p>
+          <label>Stand name or short description<input name="listingName" value="Pine Bend Firewood" required maxlength="100"></label>
+          <label>Access notes (optional)<textarea name="accessNotes" rows="2"></textarea></label>
+          <div class="actions">
+            <button type="submit" class="primary" data-publish>Save changes</button>
+            <button type="button" data-hide>Hide listing</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+  </div>
+</div>
+<script>
+  (() => {
+    const root = document.getElementById('woodstop-wireframes');
+    const find = (selector) => root.querySelector(selector);
+    const all = (selector) => Array.from(root.querySelectorAll(selector));
+    const standData = {
+      pine: { name: 'Pine Bend Firewood', town: 'Buxton', notes: '' },
+      brook: { name: 'Brook Road Bundle Stand', town: 'Standish', price: '$6 per bundle' }
+    };
+    let selected = 'pine';
+    let published = true;
+    let moved = false;
+    let publicPinMoved = false;
+    let hasSuggestionPin = false;
+    let locationMethod = '';
+    let isCorrection = false;
+    const suggestion = find('[data-suggestion]');
+    const editor = find('[data-editor]');
+    const results = find('[data-results]');
+
+    all('[data-size-button]').forEach((button) => button.addEventListener('click', () => {
+      find('.preview').dataset.size = button.dataset.sizeButton;
+      all('[data-size-button]').forEach((control) => control.setAttribute('aria-pressed', String(control === button)));
+    }));
+
+    function showScreen(screen) {
+      all('[data-panel]').forEach((panel) => { panel.hidden = panel.dataset.panel !== screen; });
+      all('[data-screen]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.screen === screen)));
+    }
+
+    function selectStand(id) {
+      selected = id;
+      find('[data-stand-title]').textContent = standData[id].name;
+      const { town, price } = standData[id];
+      find('[data-stand-facts]').textContent = price ? town + ', ME · ' + price : town + ', ME';
+      find('[data-directions-status]').textContent = '';
+      all('[data-stand]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.stand === id)));
+    }
+
+    function updatePublication() {
+      const pin = find('.map [data-stand="pine"]');
+      pin.hidden = !published;
+      pin.classList.toggle('p1', !publicPinMoved);
+      pin.classList.toggle('p2', publicPinMoved);
+      pin.style.left = publicPinMoved ? '48%' : '';
+      find('[data-pine-row]').hidden = !published;
+      find('[data-pine-name]').textContent = standData.pine.name;
+      pin.setAttribute('aria-label', standData.pine.name);
+      find('[data-publication]').textContent = published ? 'Published' : 'Hidden from public map';
+      find('[data-publish]').textContent = published ? 'Save changes' : 'Publish listing';
+      find('[data-hide]').hidden = !published;
+      selectStand(!published && selected === 'pine' ? 'brook' : selected);
+    }
+
+    all('[data-screen], [data-go]').forEach((button) => button.addEventListener('click', () => {
+      const screen = button.dataset.screen || button.dataset.go;
+      if (screen === 'suggest') {
+        isCorrection = button.hasAttribute('data-correction');
+        find('[data-suggest-title]').textContent = isCorrection ? 'Report an issue' : 'Suggest a stand';
+        find('[data-suggest-note]').textContent = isCorrection ? standData[selected].name : 'We’ll review the suggestion before it appears on the map.';
+        find('[data-description-label] span').textContent = isCorrection ? 'What should we check?' : 'Name or short description';
+        find('[data-location-choice]').hidden = isCorrection;
+        suggestion.classList.toggle('split', !isCorrection);
+        suggestion.elements.mapLink.disabled = isCorrection || locationMethod !== 'link';
+        suggestion.querySelector('[type="submit"]').textContent = isCorrection ? 'Send report' : 'Send suggestion';
+        find('[data-send-status]').textContent = '';
+      }
+      showScreen(screen);
+    }));
+    all('[data-view]').forEach((button) => button.addEventListener('click', () => {
+      const map = button.dataset.view === 'map';
+      find('[data-browse-map]').hidden = !map;
+      results.classList.toggle('split', map);
+      all('[data-view]').forEach((control) => control.setAttribute('aria-pressed', String(control === button)));
+    }));
+    all('[data-stand]').forEach((button) => button.addEventListener('click', () => {
+      results.setAttribute('data-pin-picked', '');
+      selectStand(button.dataset.stand);
+    }));
+    find('[data-directions]').addEventListener('click', () => {
+      find('[data-directions-status]').textContent = 'Directions open from the listing’s pin in the live site.';
+    });
+    all('[data-location-method]').forEach((button) => button.addEventListener('click', () => {
+      locationMethod = button.dataset.locationMethod;
+      all('[data-location-method]').forEach((choice) => choice.setAttribute('aria-pressed', String(choice === button)));
+      find('[data-suggest-map]').hidden = locationMethod !== 'pin';
+      const link = suggestion.elements.mapLink;
+      link.closest('label').hidden = locationMethod !== 'link';
+      link.disabled = locationMethod !== 'link';
+      find('[data-send-status]').textContent = '';
+      if (!link.disabled) link.focus();
+    }));
+    find('[data-drop]').addEventListener('click', (event) => {
+      hasSuggestionPin = true;
+      event.currentTarget.textContent = 'Pin placed';
+      find('[data-send-status]').textContent = '';
+    });
+    suggestion.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const hasLocation = locationMethod === 'pin' ? hasSuggestionPin : locationMethod === 'link' && suggestion.elements.mapLink.value.trim();
+      find('[data-send-status]').textContent = isCorrection
+        ? 'Report submitted in this preview.'
+        : hasLocation
+          ? 'Suggestion submitted in this preview.'
+          : 'Place a pin or add a map link.';
+    });
+    find('[data-move]').addEventListener('click', (event) => {
+      moved = !moved;
+      event.currentTarget.style.left = moved ? '48%' : '';
+      event.currentTarget.style.top = moved ? '64%' : '';
+      event.currentTarget.textContent = moved ? 'Pin moved' : 'Move pin';
+    });
+    editor.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = editor.elements.listingName.value.trim();
+      if (!name) {
+        editor.elements.listingName.focus();
+        return;
+      }
+      standData.pine.name = name;
+      standData.pine.notes = editor.elements.accessNotes.value.trim();
+      publicPinMoved = moved;
+      published = true;
+      updatePublication();
+    });
+    find('[data-hide]').addEventListener('click', () => {
+      published = false;
+      updatePublication();
+    });
+  })();
+</script>
+
+</body>
+</html>

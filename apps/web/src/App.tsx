@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { Discovery } from './Discovery';
+import logo from '../../../assets/woodstop-logo-256.png';
 
 export type Stand = {
   id: string; name: string; description: string; town: string; state: string;
@@ -6,7 +8,6 @@ export type Stand = {
   price: number | null; priceUnit: string | null; currency: string; priceObservedAt: string | null;
   paymentMethods: string | null; paymentObservedAt: string | null; locationVerifiedAt: string; isDemo: boolean;
 };
-const demoId = '11111111-1111-4111-8111-111111111111';
 const date = (value: string) => new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(value));
 const directions = (s: Stand) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${s.latitude},${s.longitude}`)}`;
 
@@ -51,8 +52,8 @@ export function App() {
     return () => controller.abort();
   }, [id, attempt]);
   useEffect(() => { document.title = stand ? `${stand.name} | Woodstop` : 'Woodstop — Find firewood near you'; }, [stand]);
-  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/">woodstop<span>●</span></a><span>Find firewood near you.</span></header>
-    <main id="main">{!id ? <section className="welcome"><span className="eyebrow">YOUR NEXT FIREWOOD STOP</span><h1>A good fire starts nearby.</h1><p>We’re building a simpler way to find roadside firewood. Explore the first stand detail preview.</p><a className="button" href={`/stands/${demoId}`}>View demo stand →</a><p className="muted">Development preview. Nearby search and real listings are coming later.</p></section> :
+  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/" aria-label="Woodstop home"><img src={logo} alt="woodstop" /></a><span>Find firewood near you.</span></header>
+    <main id="main">{!id ? <Discovery /> :
       state === 'loading' ? <p role="status" className="message">Loading stand details…</p> :
       state === 'missing' ? <section className="message"><h1>Stand not found</h1><p>This listing may have been removed or is not publicly available.</p><a href="/">Back to Woodstop</a></section> :
       state === 'error' ? <section className="message" role="alert"><h1>We couldn’t load this stand</h1><p>Check your connection and try again.</p><button className="button" onClick={() => setAttempt(a => a + 1)}>Try again</button></section> :

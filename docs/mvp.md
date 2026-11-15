@@ -1,6 +1,6 @@
 # Woodstop MVP requirements
 
-Consolidated November 8, 2026 from the founder's planning decisions. This document is the authoritative product scope, superseding earlier founder-only directory proposals. Requirements are planned behavior, not claims of implementation. **Development remains paused until the founder explicitly resumes it.**
+Consolidated November 8, 2026 from the founder's planning decisions. This document is the authoritative product scope, superseding earlier founder-only directory proposals. Requirements are planned behavior, not claims of implementation. **The founder resumed local development November 15, 2026**, selecting MapLibre with Geoapify. Retain Save a stand; ignore the wireframe's Local Listing Editor for now. Cloud provisioning and deployment require separate direction.
 
 ## 1. Audience, coverage and success
 
@@ -135,4 +135,4 @@ Price/payment dates stay separate; editing a description must not refresh unrela
 
 ## 10. Remaining technical work to decide before implementation
 
-Map tiles/geocoding providers and their costs/terms; curated anchor content; local draft/photo storage design and resizing details; secure photo hosting/review; authentication linking/recovery and development verification stub; precise seasonal/freshness date boundaries; merge/withdraw concurrency; production hosting/budget. These do not reopen the settled product choices above. No infrastructure or code implementation is authorized by this document update.
+MapLibre with Geoapify is selected for initial map/search integration; actual rural search quality and quota consumption need evaluation with a configured key. Remaining design work: curated anchors; local draft/photo storage and resizing; secure photo hosting/review; authentication linking/recovery and development verification stub; precise seasonal/freshness date boundaries; merge/withdraw concurrency; production hosting/budget. These do not reopen settled product choices. Local implementation has resumed; infrastructure and deployment require separate direction.

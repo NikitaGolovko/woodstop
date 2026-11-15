@@ -91,6 +91,46 @@ public sealed class StandTests : IAsyncLifetime
         Assert.InRange(distance, 1000, 1200);
     }
 
+    [Fact]
+    public async Task NearbySearchUsesTenMilesByDefaultAndWiderRadiusIncludesDistantStand()
+    {
+        var nearby = await client.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/stands?latitude=43.99&longitude=-71.12");
+        var item = Assert.Single(nearby.GetProperty("items").EnumerateArray());
+        Assert.Equal(DemoSeed.Id, item.GetProperty("stand").GetProperty("id").GetGuid());
+        Assert.InRange(item.GetProperty("distanceMiles").GetDouble(), 0.6, 0.8);
+        Assert.DoesNotContain("sourceNote", nearby.ToString());
+        var outside = await client.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/stands?latitude=44.2&longitude=-71.12");
+        Assert.Empty(outside.GetProperty("items").EnumerateArray());
+        var widened = await client.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/stands?latitude=44.2&longitude=-71.12&radiusMiles=25");
+        Assert.Single(widened.GetProperty("items").EnumerateArray());
+    }
+
+    [Theory]
+    [InlineData("hidden", "active")]
+    [InlineData("draft", "active")]
+    [InlineData("published", "closed")]
+    public async Task NearbySearchExcludesNonPublicStands(string publication, string operating)
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<WoodstopDbContext>();
+        var stand = await db.Stands.SingleAsync();
+        stand.PublicationState = publication; stand.OperatingStatus = operating;
+        await db.SaveChangesAsync();
+        var result = await client.GetFromJsonAsync<System.Text.Json.JsonElement>("/api/stands?latitude=43.98&longitude=-71.12");
+        Assert.Empty(result.GetProperty("items").EnumerateArray());
+    }
+
+    [Theory]
+    [InlineData("latitude=91&longitude=0")]
+    [InlineData("latitude=0&longitude=181")]
+    [InlineData("latitude=0&longitude=0&radiusMiles=0")]
+    [InlineData("latitude=0&longitude=0&radiusMiles=101")]
+    [InlineData("latitude=NaN&longitude=0")]
+    public async Task NearbySearchRejectsInvalidBounds(string query)
+    {
+        Assert.Equal(HttpStatusCode.BadRequest, (await client.GetAsync($"/api/stands?{query}")).StatusCode);
+    }
+
     public async Task DisposeAsync()
     {
         using var scope = factory.Services.CreateScope();

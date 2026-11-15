@@ -1,6 +1,6 @@
 # Architecture decisions and design follow-up
 
-Updated November 8, 2026. **Development is paused.** [MVP requirements](mvp.md) govern product behavior; this document separates the existing reference slice from proposed technical work. No infrastructure is provisioned by this plan.
+Updated November 15, 2026. **Local development has resumed at the founder's direction.** [MVP requirements](mvp.md) govern product behavior. No infrastructure or deployment is authorized.
 
 ## Baseline retained
 
@@ -8,7 +8,7 @@ One modular monolith: React/TypeScript/Vite frontend, C#/ASP.NET Core .NET 10 ba
 
 Keep feature code together inside the existing backend rather than adding microservices, generic repository layers, Kubernetes, Redis, event buses, CQRS/MediatR or a monorepo manager. A database-backed admin review queue does not require a message broker. A notification stub does not require a separate deployed service.
 
-Current implementation: health endpoint and public stand-detail read, EF migration, fictional seed, standalone web detail page and integration/browser tests. See development.md for exact run instructions. Historical build/test results do not mean the expanded MVP exists.
+Current implementation: health endpoint, public stand-detail and nearby reads, EF migration, fictional seed, map/list discovery foundation, and integration/browser tests. Map/search requires a configured Geoapify key; real coverage and remaining MVP behavior are not implemented. See development.md for run instructions.
 
 ## Product constraints for the next schema/API design
 
@@ -51,13 +51,15 @@ Photos need client resizing and server validation; concrete byte/dimension limit
 
 ## Map and destination providers
 
-Road map only, stand clustering and distinct destination anchors. Destination search must support towns, campsites, parks and addresses, not just a curated dropdown. Curated major Maine anchors are separate editorial content, not stand submissions. Compare providers for rural coverage, search, attribution, keys, cost and caching terms; do not assume public tile servers are a production backend. Offline maps and automatic route search are deferred.
+Selected November 15: MapLibre GL JS for rendering, Geoapify for road-map tiles and destination search. Use the OSM Carto road style with provider/data attribution. Configure a browser-visible key through VITE_GEOAPIFY_API_KEY and restrict allowed origins in Geoapify. This key is public; private server credentials must never go in frontend variables. Search runs on explicit form submission, returning up to five choices without a country restriction. Queries go directly to Geoapify and are not persisted by Woodstop. Missing keys and provider failures leave list browsing available. Evaluate campsite/park/rural-address matches and credit consumption before public launch.
+
+Nearby reads use SQL Server geography distance, a 10-mile default and selectable 25/50/100-mile radii. The API accepts positive radii up to 100 miles and returns the nearest 200 with a truncation indicator. Only published, non-closed reference-model records are returned. Coordinates are global. No schema change was needed. Stand markers cluster; curated destination anchors remain editorial work and are not implemented. Offline maps and automatic route search remain deferred. References: [Geoapify tiles](https://apidocs.geoapify.com/docs/maps/map-tiles/), [search](https://apidocs.geoapify.com/docs/geocoding/forward-geocoding/), [pricing](https://www.geoapify.com/pricing/).
 
 ## Notification boundary and operations
 
-Define a small application boundary/stub for later notification delivery. Submission status and rejection explanations must work through the dashboard without email delivery. Do not set up an email provider, queue or separate service during the paused phase.
+Define a small application boundary/stub for later notification delivery. Submission status and rejection explanations must work through the dashboard without email delivery. No provider, queue or separate service is needed for this slice.
 
-Use user-secrets locally/protected host settings later; no credentials in Git or frontend bundles. Review and apply migrations explicitly rather than on startup. Before public launch: authorization checks, upload controls, TLS, backup/restore, appropriate monitoring/contact routes and a budget decision. Avoid storing precise traveler histories or logging location search query strings unnecessarily.
+Use user-secrets locally/protected host settings later; no private credentials in Git or frontend bundles. Browser map keys are public and require provider-side origin restrictions. Review and apply migrations explicitly rather than on startup. Before public launch: authorization checks, upload controls, TLS, backup/restore, appropriate monitoring/contact routes and a budget decision. Avoid storing precise traveler histories or logging location search query strings unnecessarily.
 
 ## Existing references
 
@@ -65,4 +67,4 @@ Use user-secrets locally/protected host settings later; no credentials in Git or
 - [Vite prerequisites](https://vite.dev/guide/)
 - [EF Core spatial support](https://learn.microsoft.com/en-us/ef/core/modeling/spatial)
 
-These were consulted for the original baseline. Node was subsequently upgraded to 26.13.0 on this setup machine. Check current versions/terms/prices when technical implementation is resumed; this document does not select new vendors.
+These were consulted for the original baseline. Node was subsequently upgraded to 26.13.0 on this setup machine. Recheck versions/terms/prices when integrating or releasing services; the November 15 map-provider selection is recorded above.

@@ -1,6 +1,12 @@
 # Implementation plan and planning status
 
-Consolidated November 8, 2026. **Development remains paused.** This sequence is a proposal for later execution, not authorization to resume. [MVP requirements](mvp.md) are authoritative; do not use the earlier founder-only directory scope.
+Consolidated November 8, 2026; status updated November 15. **The founder resumed local development**, selecting MapLibre with Geoapify. [MVP requirements](mvp.md) are authoritative. Retain Save a stand and ignore the wireframe's Local Listing Editor. Cloud provisioning/deployment require separate direction.
+
+## Active slice: discovery foundation
+
+Implemented: MapLibre road-map integration, Geoapify destination search with explicit result selection, Southern Maine initial center, map/list views, stand clustering and selection, Search this area, explicit Use my location, 10-mile default with wider radii, SQL geography nearby reads, public-only results, and loading/empty/error/retry states. No schema changes. List discovery remains available without a map key. The existing stand-detail reference and fictional seed remain.
+
+Still pending before the full discovery gate: real provider/key evaluation, curated anchors, confirmation/season models and filters, season/reopening dates, approved flame-pin artwork for markers and Share. Save a stand/local drafts, accounts/contributions and review remain subsequent slices. The November 8 reference-slice description below is historical.
 
 ## Implemented reference slice
 

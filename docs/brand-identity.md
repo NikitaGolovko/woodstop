@@ -123,4 +123,4 @@ Keep confirmation separate from moderation, ownership, availability, and safety.
 - Browser theme color: `apps/web/index.html`
 - Product behavior: [MVP requirements](mvp.md)
 
-This guide documents the approved look and feel. It does not authorize implementing the planned MVP while development is paused.
+This guide documents the approved look and feel. The founder separately resumed local MVP development November 15, 2026; cloud provisioning/deployment remain separate decisions.

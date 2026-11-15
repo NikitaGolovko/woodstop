@@ -1,6 +1,14 @@
 # Local development
 
-> Development is paused. This document describes the existing demo only; the expanded agreed MVP in [mvp.md](mvp.md) is not implemented. In particular, the current required fields and USD-only response are demo limitations, not the new submission requirements.
+> Local development resumed November 15, 2026. The map/list discovery foundation and fictional stand-detail reference are implemented; the expanded [MVP](mvp.md) is still in progress. Required fields and USD-only responses remain reference-model limitations.
+
+## Map and destination search configuration
+
+Copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_GEOAPIFY_API_KEY` to a Geoapify browser key. Restart Vite after changing it. The key is visible to visitors: restrict allowed origins in the Geoapify dashboard, including the local preview origin when developing. Never put private server credentials in VITE variables. `.env.local` is ignored by Git.
+
+The root page now opens discovery. Without a key, map/search explains its configuration state and list discovery remains available. Searches run only on submission, go directly to Geoapify and offer up to five destination choices. Use my location is the only implemented action requesting location; nothing requests permission on launch. Geoapify tiles/search require a connection. There is no offline map support.
+
+`GET /api/stands?latitude=43.68&longitude=-70.44&radiusMiles=10` returns nearest-first public reference stands and straight-line mile distances. Radius defaults to 10 miles, with a technical maximum of 100; at most 200 items are returned with a truncation flag. SQL Server geography computes distances in meters. No schema migration is needed for this slice. The fictional seed lies outside the initial Southern Maine search radius, so an empty initial list is expected. Search around its coordinates (43.98, -71.12) using the map or location to exercise it.
 
 ## Prerequisites
 
@@ -22,7 +30,9 @@ dotnet ef database update --project apps/api
 dotnet run --project apps/api -- --seed-demo
 ```
 
-The local connection is already configured on this machine through user-secrets; no credentials are committed. TrustServerCertificate is for this local instance only. A hosted database needs properly validated TLS and its own settings.
+Configure the local connection through user-secrets as shown above; do not assume a new terminal/session loads an earlier machine setting. Alternatively, set `ConnectionStrings__Woodstop` in the API process environment to the same local connection string. No credentials are committed. TrustServerCertificate is for this local instance only. A hosted database needs properly validated TLS and its own settings.
+
+On November 15 the existing `WoodstopDevelopment.mdf` and log files were present but detached from LocalDB. They were reattached without replacing data or applying a new migration. If this recurs, inspect the instance and existing files before creating a replacement database.
 
 Migrations are explicit; API startup never creates or migrates databases. Review `docs/initial-migration.sql` for the initial schema. The demo command works only in Development and adds one stable-ID fictional record; rerunning does not overwrite data. Do not seed a real deployment.
 
@@ -59,9 +69,17 @@ API tests use real SQL Server LocalDB with a unique `WoodstopTests_<guid>` datab
 
 Browser tests require the seeded API running on port 5080. They start Vite automatically and run in Chromium at desktop and emulated iPhone dimensions, checking real API reads/directions, unknown fields, loading/retry, missing listings, and horizontal overflow. Phone emulation does not replace testing on a physical phone. Screenshots go into `apps/web/test-results/` when run through npm; test artifacts are ignored.
 
+### Verification run: November 15, 2026
+
+- API build passed; 18 SQL Server integration tests passed, including nearby radius/default-distance checks, input validation and nonpublic exclusion.
+- Web production build passed. MapLibre and its worker are bundled separately; the build retains a large-map-chunk warning. Stand-detail/list code does not need to load the map bundle until rendering the map.
+- All 18 desktop/mobile browser checks passed. Discovery checks cover initial center/radius, explicit location permission, denied location, radius widening, request retry, destination selection and provider failure. Discovery map/search responses use a fake test key and intercepted Geoapify fixtures, so tests do not consume provider credits. Stand-detail checks still read the real local API/database.
+- Inspected desktop/mobile discovery screenshots. The fixture intentionally has a plain map background, not real geographic tiles. Live Geoapify tile/search quality, credits, and real-device testing remain unverified until a real key is configured.
+- Tests launch their own Vite instance; stop any manual preview occupying port 5173 before running them.
+
 ## Current limits
 
-This is the stand-detail slice: no nearby search/map, real stand data, public submissions, photos, authentication, deployment, or offline behavior yet. The root page links to the fictional detail preview. Map guidance is general copy, with no live regulatory assertions.
+This is a discovery foundation plus stand-detail reference: no real stand data, curated destination anchors, confirmation/season filters, seasonal date calculations, Share action, Save a stand/local drafts, public submissions, photos, authentication, deployment or offline behavior yet. Do not confuse this slice with the completed map-discovery gate or full MVP. Geoapify destination quality/credit usage still need live evaluation with a configured key. Map guidance is general copy, with no live regulatory assertions.
 
 The direct System.Security.Cryptography.Pkcs package reference upgrades a transitive dependency flagged by NuGet's advisory check. Reassess the override when upgrading the EF toolchain. Keep framework packages on compatible servicing releases.
 
