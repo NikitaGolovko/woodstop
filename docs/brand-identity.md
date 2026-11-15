@@ -17,7 +17,7 @@ The green, wood, and campfire palette is an aesthetic direction, not an environm
 
 The current preferred logo is a simple forest-green map pin with a cream flame-shaped negative-space cutout, paired with a plain lowercase **woodstop** wordmark in solid Ember Clay (`#BC6D3E`). The flame and pin share one compact mark. The wordmark is flat color, with no wood-grain texture, effects, or letter gimmicks. The mark should remain simple and readable at small sizes.
 
-The approved PNG exports are in `assets/woodstop-logo-512.png`, `assets/woodstop-logo-256.png`, and `assets/woodstop-logo-128.png`. They use a warm cream background. Use these exports as the current visual source of truth. The existing SVG icon is an exploratory draft and is not an approved substitute; redraw a vector from the selected design before using an SVG in production.
+The approved PNG exports are in `assets/woodstop-logo-512.png`, `assets/woodstop-logo-256.png`, and `assets/woodstop-logo-128.png`; these use a warm cream background. Transparent-background counterparts are `assets/woodstop-logo-transparent-512.png`, `assets/woodstop-logo-transparent-256.png`, and `assets/woodstop-logo-transparent-128.png`. Use the transparent variants on flexible or colored surfaces and the cream-backed variants where the warm canvas is desired. The existing SVG icon is an exploratory draft and is not an approved substitute; redraw a vector from the selected design before using an SVG in production.
 
 Use the symbol alone where a compact app or map mark is needed. Use the full pin-and-wordmark lockup for the site identity. Do not add the separate firewood bundle illustration to the logo; bundles can appear as supporting product imagery when useful.
 
