@@ -4,6 +4,8 @@ Prepared November 15, 2026 at the founder's request. Initial target: Cloudflare 
 
 ## What is deployed
 
+Listings use readable routes such as `/stands/maple-corner-gorham-me`. Direct links, refreshes and legacy GUID links work in the static sample; legacy links are replaced with the readable address in the browser. Sample slugs are explicit fixture fields and should remain stable when listing copy changes. Publishing these links does not require a cloud database migration.
+
 `npm run build:sample` builds React/MapLibre with the ten checked-in fictional public fixtures in `apps/web/src/sample/stands.json`. Map tiles and destination search still go to Geoapify. Nearby filtering uses great-circle distance in the browser for this sample only. It does not expose or synchronize LocalDB. Changes to local seed records are not automatically published.
 
 Normal `npm run dev` and `npm run build` retain the ASP.NET Core API and SQL Server geography behavior. The sample is not the deployed MVP backend: contributions, accounts, uploads, review and persistent server data remain unimplemented. Keep sample and future real deployments distinct. No migration or seeding command runs during the static build.

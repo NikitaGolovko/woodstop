@@ -40,6 +40,8 @@ Migrations are explicit; API startup never creates or migrates databases. Review
 
 ## Run locally
 
+Readable stand links require the `StandSlugs` migration (`dotnet ef database update --project apps/api`) and the updated API. It has been applied to this local development database; restart an already running API to load the new route/DTO. GUID API reads and old shared URLs remain supported. For example, `/stands/pine-bend-firewood-conway-nh` opens the original reference stand. Public sample slugs are bundled and do not need database changes in Cloudflare.
+
 Terminal 1, repository root:
 
 ```powershell
