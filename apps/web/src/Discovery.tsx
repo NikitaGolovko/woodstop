@@ -68,9 +68,9 @@ export function Discovery() {
     }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
   }
   return <section className="discovery">
-    <div className="finder-heading"><span className="eyebrow">YOUR NEXT FIREWOOD STOP</span><h1>Find firewood near you.</h1><p>Explore roadside stands near your next stop.</p></div>
+    <div className="finder-heading"><h1>Find firewood near you.</h1></div>
     <form className="destination-search" onSubmit={search}>
-      <label htmlFor="destination">Where are you headed?</label>
+      <label className="sr-only" htmlFor="destination">Where are you headed?</label>
       <div className="search-row"><input id="destination" type="search" placeholder="Town, campsite, park or address" value={query} maxLength={200} required onChange={event => {
         setQuery(event.target.value); searchRequest.current?.abort(); setSearching(false); setDestinations([]); setSearchState('');
       }} /><button className="button" disabled={searching}>Search</button></div>
@@ -84,22 +84,22 @@ export function Discovery() {
       <div className="view-switch" role="group" aria-label="Results view"><button aria-pressed={view === 'map'} onClick={() => setView('map')}>Map</button><button aria-pressed={view === 'list'} onClick={() => setView('list')}>List</button></div>
     </div>
     {locationStatus && <p role="status">{locationStatus}</p>}
-    <p className="coverage">{area} · Coverage is growing; listings may be incomplete.</p>
+    <p className="search-area">{area}</p>
+    <div className={`finder-results${view === 'map' ? ' with-map' : ''}`}>
     {view === 'map' && <Suspense fallback={<p role="status">Loading map…</p>}><StandMap center={center} items={items} onSelect={setSelected} onExplore={point => explore(point, 'Map area')} /></Suspense>}
     <section className="nearby-results" aria-label="Nearby stands" aria-busy={state === 'loading'}>
-      <h2>Nearby stands</h2><p className="muted">Nearest first · Straight-line distances</p>
+      <div className="results-heading"><h2>Nearby stands</h2>{state === 'ready' && items.length > 0 && <span className="muted">{items.length}{truncated ? '+' : ''} · Nearest first</span>}</div>
       {state === 'loading' && <p role="status">Looking for nearby stands…</p>}
       {state === 'error' && <div role="alert"><p>We couldn’t load nearby stands. Check your connection and try again.</p><button className="secondary" onClick={() => setAttempt(value => value + 1)}>Try again</button></div>}
-      {state === 'ready' && items.length === 0 && <div className="empty-results"><h3>No listed stands within {radius} miles</h3><p>Try a wider radius or another destination. This doesn’t mean there are no stands in the area.</p></div>}
+      {state === 'ready' && items.length === 0 && <div className="empty-results"><h3>No listed stands within {radius} miles</h3><p>Widen the radius or try another destination.</p></div>}
       {truncated && <p role="status">Showing the nearest 200 stands. Narrow your radius to see a smaller area.</p>}
       <ul className="nearby-list">{items.map(({ stand, distanceMiles }) => <li key={stand.id} className={stand.id === selected ? 'selected' : ''}>
         <div><h3><a href={`/stands/${stand.id}`}>{stand.name}</a></h3><p>{[stand.town, stand.state].filter(Boolean).join(', ')} · {distanceMiles.toFixed(1)} miles straight-line</p>
         <p>{stand.price === null ? 'Price unknown' : `${new Intl.NumberFormat('en-US', { style: 'currency', currency: stand.currency }).format(stand.price)} per ${stand.priceUnit}`} · Stock unknown</p>
         {stand.operatingStatus === 'seasonal' && <p>Seasonal · Dates unknown</p>}
         {stand.isDemo && <p className="demo-label">Fictional demo stand. Do not travel to this location.</p>}</div>
-        <a className="secondary" href={`/stands/${stand.id}`}>View stand</a>
       </li>)}</ul>
     </section>
-    <aside className="guidance"><strong>Buy near where you burn.</strong><p>Check your destination’s firewood guidance. Listings do not guarantee stock or that wood is permitted at your destination.</p></aside>
+    </div>
   </section>;
 }

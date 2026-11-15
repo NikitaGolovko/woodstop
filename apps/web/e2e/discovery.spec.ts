@@ -44,7 +44,7 @@ test('denied location leaves destination search and manual browsing available', 
   await page.route('**/api/stands?**', route => route.fulfill({ json: { items: [], truncated: false } }));
   await page.goto('/');
   await page.getByRole('button', { name: 'Use my location' }).click();
-  await expect(page.getByRole('status')).toContainText('We couldn’t access your location');
+  await expect(page.getByRole('status').filter({ hasText: 'We couldn’t access your location' })).toBeVisible();
   await expect(page.getByRole('searchbox', { name: 'Where are you headed?' })).toBeEnabled();
 });
 

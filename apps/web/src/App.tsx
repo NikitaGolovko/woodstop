@@ -52,11 +52,11 @@ export function App() {
     return () => controller.abort();
   }, [id, attempt]);
   useEffect(() => { document.title = stand ? `${stand.name} | Woodstop` : 'Woodstop — Find firewood near you'; }, [stand]);
-  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/" aria-label="Woodstop home"><img src={logo} alt="woodstop" /></a><span>Find firewood near you.</span></header>
-    <main id="main">{!id ? <Discovery /> :
+  return <><a className="skip" href="#main">Skip to content</a><header><a className="brand" href="/" aria-label="Woodstop home"><img src={logo} alt="woodstop" /></a></header>
+    <main id="main" className={!id ? 'finder-main' : undefined}>{!id ? <Discovery /> :
       state === 'loading' ? <p role="status" className="message">Loading stand details…</p> :
       state === 'missing' ? <section className="message"><h1>Stand not found</h1><p>This listing may have been removed or is not publicly available.</p><a href="/">Back to Woodstop</a></section> :
       state === 'error' ? <section className="message" role="alert"><h1>We couldn’t load this stand</h1><p>Check your connection and try again.</p><button className="button" onClick={() => setAttempt(a => a + 1)}>Try again</button></section> :
       stand && <StandPage stand={stand}/>}
-    </main><footer>woodstop · Less searching. More time by the fire.</footer></>;
+    </main><footer>{id ? 'woodstop · Less searching. More time by the fire.' : 'Listings may be incomplete or inaccurate. Buy local and check your destination’s firewood guidance.'}</footer></>;
 }
