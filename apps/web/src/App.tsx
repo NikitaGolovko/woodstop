@@ -31,7 +31,6 @@ export function StandPage({ stand: s }: { stand: Stand }) {
       <a className="button" href={directions(s)} target="_blank" rel="noreferrer">{s.isDemo ? 'Preview directions link ↗' : 'Get directions ↗'}</a>
       <small>Opens Google Maps. Navigation may need a connection.</small>
     </section></div>
-    <aside className="guidance"><strong>Buy near where you burn.</strong><p>Check your destination’s firewood guidance before you travel. A nearby stand does not establish that wood is permitted at your destination.</p></aside>
   </>;
 }
 
@@ -59,5 +58,5 @@ export function App() {
       state === 'missing' ? <section className="message"><h1>Stand not found</h1><p>This listing may have been removed or is not publicly available.</p><a href="/">Back to Woodstop</a></section> :
       state === 'error' ? <section className="message" role="alert"><h1>We couldn’t load this stand</h1><p>Check your connection and try again.</p><button className="button" onClick={() => setAttempt(a => a + 1)}>Try again</button></section> :
       stand && <StandPage stand={stand}/>}
-    </main><footer className="site-footer"><span className="copyright">© {copyrightYear} Woodstop</span>{!id && <p>Listings may be incomplete or inaccurate. Buy local and check your destination’s firewood guidance.</p>}</footer></>;
+    </main><footer className="site-footer"><span className="copyright">© {copyrightYear} Woodstop</span><p>Listings may be incomplete or inaccurate. Buy local and check your destination’s firewood guidance.</p></footer></>;
 }
