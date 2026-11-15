@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Discovery } from './Discovery';
 import logo from '../../../assets/woodstop-logo-256.png';
+import { getStand } from './stand-data';
 
 export type Stand = {
   id: string; name: string; description: string; town: string; state: string;
@@ -44,10 +45,10 @@ export function App() {
     if (!id) return;
     const controller = new AbortController();
     setState('loading');
-    fetch(`/api/stands/${id}`, { signal: controller.signal }).then(async response => {
-      if (response.status === 404) { setState('missing'); return; }
-      if (!response.ok) throw new Error('Request failed');
-      setStand(await response.json()); setState('ready');
+    getStand(id, controller.signal).then(result => {
+      if (controller.signal.aborted) return;
+      if (!result) { setState('missing'); return; }
+      setStand(result); setState('ready');
     }).catch(error => { if (error.name !== 'AbortError') setState('error'); });
     return () => controller.abort();
   }, [id, attempt]);

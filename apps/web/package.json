@@ -9,8 +9,10 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
+    "build:sample": "tsc --noEmit && vite build --mode sample",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:sample": "playwright test --config playwright.sample.config.ts"
   },
   "dependencies": {
     "maplibre-gl": "6.18.0",

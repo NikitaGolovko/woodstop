@@ -1,9 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState, type FormEvent } from 'react';
-import type { Stand } from './App';
+import { getNearbyStands, type NearbyStand } from './stand-data';
+export type { NearbyStand } from './stand-data';
 import { searchDestinations, type Destination } from './geoapify';
 const StandMap = lazy(() => import('./StandMap').then(module => ({ default: module.StandMap })));
 
-export type NearbyStand = { stand: Stand; distanceMiles: number };
 const initialCenter: [number, number] = [-70.44, 43.68];
 
 export function Discovery() {
@@ -28,10 +28,8 @@ export function Discovery() {
   useEffect(() => {
     const controller = new AbortController();
     setState('loading'); setItems([]); setSelected(null); setTruncated(false);
-    const params = new URLSearchParams({ longitude: String(center[0]), latitude: String(center[1]), radiusMiles: String(radius) });
-    fetch(`/api/stands?${params}`, { signal: controller.signal }).then(async response => {
-      if (!response.ok) throw new Error('Unavailable');
-      const data = await response.json();
+    getNearbyStands(center, radius, controller.signal).then(data => {
+      if (controller.signal.aborted) return;
       setItems(data.items); setTruncated(data.truncated); setState('ready');
     }).catch(error => { if (error.name !== 'AbortError') setState('error'); });
     return () => controller.abort();

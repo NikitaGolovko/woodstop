@@ -4,6 +4,8 @@ Updated November 15, 2026. **Local development has resumed at the founder's dire
 
 ## Baseline retained
 
+November 15 public sample follow-up: [Cloudflare Pages deployment](deployment.md) is prepared as a separate static `sample` build with checked-in fictional listings and browser-only distance filtering. The ordinary app keeps the .NET/SQL design below. This preview is not a database/provider migration, does not expose LocalDB, and does not implement the backend MVP. Cloudflare project setup, repository connection and live deployment verification are still outstanding. No Azure resources are selected or provisioned for the sample.
+
 One modular monolith: React/TypeScript/Vite frontend, C#/ASP.NET Core .NET 10 backend, EF Core SQL Server provider with NetTopologySuite, SQL Server locally. Azure App Service serving built web assets plus API, and Azure SQL, remain hosting candidates, not deployment commitments. One origin; Vite proxies API traffic locally.
 
 Keep feature code together inside the existing backend rather than adding microservices, generic repository layers, Kubernetes, Redis, event buses, CQRS/MediatR or a monorepo manager. A database-backed admin review queue does not require a message broker. A notification stub does not require a separate deployed service.

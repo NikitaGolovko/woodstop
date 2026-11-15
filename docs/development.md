@@ -4,6 +4,8 @@
 
 ## Map and destination search configuration
 
+For the public static sample, use `npm run build:sample --prefix apps/web` and `npm run test:sample --prefix apps/web`; see [deployment](deployment.md). These commands use bundled fictional data and do not need the API. Normal development continues to use the API below. The sample build requires a Geoapify browser key at build time.
+
 Copy `apps/web/.env.example` to `apps/web/.env.local` and set `VITE_GEOAPIFY_API_KEY` to a Geoapify browser key. Restart Vite after changing it. The key is visible to visitors: restrict allowed origins in the Geoapify dashboard, including the local preview origin when developing. Never put private server credentials in VITE variables. `.env.local` is ignored by Git.
 
 The root page now opens discovery. Without a key, map/search explains its configuration state and list discovery remains available. Searches run only on submission, go directly to Geoapify and offer up to five destination choices. Use my location is the only implemented action requesting location; nothing requests permission on launch. Geoapify tiles/search require a connection. There is no offline map support.

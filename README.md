@@ -13,6 +13,8 @@ Woodstop helps campers and travelers locate roadside firewood bundle stands, und
 
 ## Repository
 
+Public sample hosting: see [Cloudflare deployment](docs/deployment.md) for the separate static build, GitHub checks, setup and rollback. This preview bundles fictional listings; it does not deploy the .NET/SQL backend.
+
 ```text
 apps/
   api/                 ASP.NET Core API; one production backend project
