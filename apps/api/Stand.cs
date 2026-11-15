@@ -5,6 +5,7 @@ namespace Woodstop.Api;
 public sealed class Stand
 {
     public Guid Id { get; set; }
+    public string Slug { get; set; } = "";
     public required string Name { get; set; }
     public required string Description { get; set; }
     public required string Town { get; set; }
@@ -48,9 +49,9 @@ public sealed class Stand
 public sealed record StandDetail(Guid Id, string Name, string Description, string Town, string State,
     double Latitude, double Longitude, string? AccessNotes, string OperatingStatus,
     decimal? Price, string? PriceUnit, string Currency, DateTimeOffset? PriceObservedAt,
-    string? PaymentMethods, DateTimeOffset? PaymentObservedAt, DateTimeOffset LocationVerifiedAt, bool IsDemo)
+    string? PaymentMethods, DateTimeOffset? PaymentObservedAt, DateTimeOffset LocationVerifiedAt, bool IsDemo, string Slug)
 {
     public static StandDetail From(Stand s) => new(s.Id, s.Name, s.Description, s.Town, s.State,
         s.Location.Y, s.Location.X, s.AccessNotes, s.OperatingStatus, s.Price, s.PriceUnit, "USD",
-        s.PriceObservedAt, s.PaymentMethods, s.PaymentObservedAt, s.LocationVerifiedAt, s.IsDemo);
+        s.PriceObservedAt, s.PaymentMethods, s.PaymentObservedAt, s.LocationVerifiedAt, s.IsDemo, s.Slug);
 }

@@ -4,7 +4,7 @@ import logo from '../../../assets/woodstop-logo-256.png';
 import { getStand } from './stand-data';
 
 export type Stand = {
-  id: string; name: string; description: string; town: string; state: string;
+  id: string; slug?: string; name: string; description: string; town: string; state: string;
   latitude: number; longitude: number; accessNotes: string | null; operatingStatus: string;
   price: number | null; priceUnit: string | null; currency: string; priceObservedAt: string | null;
   paymentMethods: string | null; paymentObservedAt: string | null; locationVerifiedAt: string; isDemo: boolean;
@@ -35,8 +35,7 @@ export function StandPage({ stand: s }: { stand: Stand }) {
 }
 
 export function App() {
-  const match = /^\/stands\/([0-9a-f-]{36})\/?$/i.exec(window.location.pathname);
-  const id = match?.[1];
+  const [id] = useState(() => /^\/stands\/([^/]+)\/?$/.exec(window.location.pathname)?.[1]);
   const [stand, setStand] = useState<Stand | null>(null);
   const [state, setState] = useState<'loading' | 'ready' | 'missing' | 'error'>('loading');
   const [attempt, setAttempt] = useState(0);
@@ -47,6 +46,7 @@ export function App() {
     getStand(id, controller.signal).then(result => {
       if (controller.signal.aborted) return;
       if (!result) { setState('missing'); return; }
+      if (result.slug) window.history.replaceState(null, '', `/stands/${encodeURIComponent(result.slug)}${window.location.search}${window.location.hash}`);
       setStand(result); setState('ready');
     }).catch(error => { if (error.name !== 'AbortError') setState('error'); });
     return () => controller.abort();

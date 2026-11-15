@@ -10,6 +10,8 @@ public sealed class WoodstopDbContext(DbContextOptions<WoodstopDbContext> option
     {
         var stand = model.Entity<Stand>();
         stand.HasKey(s => s.Id);
+        stand.Property(s => s.Slug).HasMaxLength(200);
+        stand.HasIndex(s => s.Slug).IsUnique();
         stand.Property(s => s.Name).HasMaxLength(160);
         stand.Property(s => s.Description).HasMaxLength(2000);
         stand.Property(s => s.Town).HasMaxLength(120);
@@ -36,8 +38,23 @@ public sealed class WoodstopDbContext(DbContextOptions<WoodstopDbContext> option
 
     private void ValidateStands()
     {
+        var reserved = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var entry in ChangeTracker.Entries<Stand>()
             .Where(e => e.State is EntityState.Added or EntityState.Modified))
+        {
             entry.Entity.Validate();
+            if (entry.State == EntityState.Modified && entry.Property(s => s.Slug).IsModified)
+                throw new ArgumentException("Public stand URLs cannot be changed by an ordinary edit.");
+            if (entry.State == EntityState.Added)
+            {
+                var basis = StandSlug.Create(entry.Entity);
+                var candidate = basis;
+                var suffix = 2;
+                while (reserved.Contains(candidate) || Stands.Any(s => s.Slug == candidate))
+                    candidate = $"{basis}-{suffix++}";
+                entry.Entity.Slug = candidate;
+                reserved.Add(candidate);
+            }
+        }
     }
 }

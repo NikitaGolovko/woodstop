@@ -11,6 +11,7 @@ test.beforeEach(async ({ page }) => {
 test('bundled discovery starts with seven stands and widens to nine', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('link', { name: 'Maple Corner — demo' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Maple Corner — demo' })).toHaveAttribute('href', '/stands/maple-corner-gorham-me');
   await expect(page.locator('.nearby-list > li')).toHaveCount(7);
   await page.getByRole('combobox', { name: 'Within' }).selectOption('25');
   await expect(page.locator('.nearby-list > li')).toHaveCount(9);
@@ -22,6 +23,7 @@ test('bundled discovery starts with seven stands and widens to nine', async ({ p
 test('stand deep links survive refresh and missing listings stay missing', async ({ page }) => {
   await page.goto('/stands/22222222-2222-4222-8222-000000000001');
   await expect(page.getByRole('heading', { name: 'Maple Corner — demo' })).toBeVisible();
+  await expect(page).toHaveURL(/\/stands\/maple-corner-gorham-me$/);
   await page.reload();
   await expect(page.getByText('$6.00 per bundle')).toBeVisible();
   await page.goto('/stands/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa');

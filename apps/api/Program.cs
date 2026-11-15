@@ -22,6 +22,13 @@ if (args.Contains("--seed-demo"))
 }
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+app.MapGet("/api/stands/by-slug/{slug}", async (string slug, WoodstopDbContext db, CancellationToken cancellation) =>
+{
+    var stand = await db.Stands.AsNoTracking()
+        .Where(s => s.Slug == slug && s.PublicationState == "published" && s.OperatingStatus != "closed")
+        .SingleOrDefaultAsync(cancellation);
+    return stand is null ? Results.NotFound() : Results.Ok(StandDetail.From(stand));
+});
 app.MapGet("/api/stands", async (double latitude, double longitude, double? radiusMiles,
     WoodstopDbContext db, CancellationToken cancellation) =>
 {

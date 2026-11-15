@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef, useState, type FormEvent } from 'react';
-import { getNearbyStands, type NearbyStand } from './stand-data';
+import { getNearbyStands, standUrl, type NearbyStand } from './stand-data';
 export type { NearbyStand } from './stand-data';
 import { searchDestinations, type Destination } from './geoapify';
 const StandMap = lazy(() => import('./StandMap').then(module => ({ default: module.StandMap })));
@@ -92,7 +92,7 @@ export function Discovery() {
       {state === 'ready' && items.length === 0 && <div className="empty-results"><h3>No listed stands within {radius} miles</h3><p>Widen the radius or try another destination.</p></div>}
       {truncated && <p role="status">Showing the nearest 200 stands. Narrow your radius to see a smaller area.</p>}
       <ul className="nearby-list">{items.map(({ stand, distanceMiles }) => <li key={stand.id} className={stand.id === selected ? 'selected' : ''}>
-        <div><h3><a href={`/stands/${stand.id}`}>{stand.name}</a></h3><p>{[stand.town, stand.state].filter(Boolean).join(', ')} · {distanceMiles.toFixed(1)} miles straight-line</p>
+        <div><h3><a href={standUrl(stand)}>{stand.name}</a></h3><p>{[stand.town, stand.state].filter(Boolean).join(', ')} · {distanceMiles.toFixed(1)} miles straight-line</p>
         <p>{stand.price === null ? 'Price unknown' : `${new Intl.NumberFormat('en-US', { style: 'currency', currency: stand.currency }).format(stand.price)} per ${stand.priceUnit}`} · Stock unknown</p>
         {stand.operatingStatus === 'seasonal' && <p>Seasonal · Dates unknown</p>}
         </div>

@@ -149,6 +149,29 @@ public sealed class StandTests : IAsyncLifetime
         Assert.Equal(7, response.GetProperty("items").GetArrayLength());
     }
 
+    [Fact]
+    public async Task ReadableLinksAreUniqueStableAndRespectPublication()
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<WoodstopDbContext>();
+        var stand = await db.Stands.SingleAsync();
+        Assert.Equal("pine-bend-firewood-conway-nh", stand.Slug);
+        var copy = (Stand)db.Entry(stand).CurrentValues.ToObject();
+        copy.Id = Guid.NewGuid();
+        db.Stands.Add(copy);
+        await db.SaveChangesAsync();
+        Assert.Equal("pine-bend-firewood-conway-nh-2", copy.Slug);
+        stand.Name = "Renamed stand";
+        await db.SaveChangesAsync();
+        var readable = await client.GetFromJsonAsync<StandDetail>($"/api/stands/by-slug/{stand.Slug}");
+        Assert.Equal(stand.Id, readable!.Id);
+        Assert.Equal("Renamed stand", readable.Name);
+        Assert.Equal(HttpStatusCode.OK, (await client.GetAsync($"/api/stands/{stand.Id}")).StatusCode);
+        stand.PublicationState = "hidden";
+        await db.SaveChangesAsync();
+        Assert.Equal(HttpStatusCode.NotFound, (await client.GetAsync($"/api/stands/by-slug/{stand.Slug}")).StatusCode);
+    }
+
     public async Task DisposeAsync()
     {
         using var scope = factory.Services.CreateScope();

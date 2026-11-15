@@ -2,6 +2,7 @@ import type { Stand } from './App';
 
 export const isSampleBuild = import.meta.env.MODE === 'sample';
 export type NearbyStand = { stand: Stand; distanceMiles: number };
+export const standUrl = (stand: Stand) => `/stands/${encodeURIComponent(stand.slug || stand.id)}`;
 
 async function sampleStands(signal: AbortSignal): Promise<Stand[]> {
   const { default: stands } = await import('./sample/stands.json');
@@ -33,8 +34,9 @@ export async function getNearbyStands(center: [number, number], radius: number, 
 }
 
 export async function getStand(id: string, signal: AbortSignal): Promise<Stand | null> {
-  if (isSampleBuild) return (await sampleStands(signal)).find(stand => stand.id.toLowerCase() === id.toLowerCase()) ?? null;
-  const response = await fetch(`/api/stands/${id}`, { signal });
+  if (isSampleBuild) return (await sampleStands(signal)).find(stand => stand.id.toLowerCase() === id.toLowerCase() || stand.slug?.toLowerCase() === id.toLowerCase()) ?? null;
+  const path = /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(id) ? encodeURIComponent(id) : `by-slug/${encodeURIComponent(id)}`;
+  const response = await fetch(`/api/stands/${path}`, { signal });
   if (response.status === 404) return null;
   if (!response.ok) throw new Error('Could not load stand.');
   return response.json();

@@ -83,6 +83,11 @@ namespace Woodstop.Api.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("SourceNote")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -101,6 +106,9 @@ namespace Woodstop.Api.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Stands");
                 });
