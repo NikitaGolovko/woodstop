@@ -26,7 +26,9 @@ SQL Server integration tests live in `tests/api/`; browser tests live in `apps/w
 
 ## Current state
 
-The stand-detail reference and discovery foundation are implemented: MapLibre/Geoapify map and destination search, map/list views, explicit geolocation, radius widening, clustered markers, and nearest-first SQL Server geography-backed reads. A Geoapify browser key is needed for map/search; list browsing works without it. The seed remains fictional. Real data, curated anchors, confirmation/season features, drafts, accounts, moderation and deployment remain pending. See local development for setup and limits.
+The stand-detail reference and discovery foundation are implemented: MapLibre/Geoapify map and destination search, map/list views, explicit geolocation, radius widening, clustered markers, and nearest-first SQL Server geography-backed reads. A Geoapify browser key is needed for map/search; list browsing works without it. The seed remains fictional.
+
+The Cloudflare contribution slice now includes persistent device drafts/photos, verified accounts, private submissions, withdrawal/revision and admin review/export. Published listings remain checked-in JSON. Local checks pass; hosted database/auth configuration and live verification are still required. See [submission inbox and dashboard setup](docs/submission-inbox.md). Curated anchors, confirmations, seasons and the remaining moderation tools are later MVP work.
 
 ## Current planning decisions
 

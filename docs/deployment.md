@@ -1,5 +1,7 @@
 # Public sample deployment
 
+Current submission follow-up: [the Cloudflare inbox](submission-inbox.md) adds private drafts, accounts and reviewed submissions while published results stay in JSON. The Worker bundle is prepared, but hosted D1/auth settings must be configured through the founder's dashboard before live submissions can be accepted. The static-only discussion below describes the earlier preview and its Git build settings; the Worker now includes an optional `/api/*` handler and serves listings normally when the inbox is unconfigured.
+
 Prepared November 15, 2026 at the founder's request. Initial target: Cloudflare Pages connected to GitHub, serving a public, read-only sample. No Azure resources, cloud database or backend rewrite is needed for this preview. No Cloudflare project has been provisioned by these repository changes.
 
 ## What is deployed

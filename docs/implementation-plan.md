@@ -4,9 +4,11 @@ Consolidated November 8, 2026; status updated November 15. **The founder resumed
 
 ## Active slice: discovery foundation
 
+November 15 submission follow-up: the founder selected JSON-backed public listings plus a small Cloudflare inbox. Implemented locally: precise-location/manual drafts, IndexedDB/photo persistence, accounts and verified contribution gates, atomic/idempotent inbox submission, member statuses, pending withdrawal, rejection revision, admin/photo review and approved JSON export. [Setup and limits](submission-inbox.md) distinguish local verification from dashboard configuration still needed. The .NET reference is unchanged; no Azure resources are needed for this stage. The full discovery/confirmation/moderation MVP is not complete.
+
 Implemented: MapLibre road-map integration, Geoapify destination search with explicit result selection, Southern Maine initial center, map/list views, stand clustering and selection, Search this area, explicit Use my location, 10-mile default with wider radii, SQL geography nearby reads, public-only results, and loading/empty/error/retry states. No schema changes. List discovery remains available without a map key. The existing stand-detail reference and fictional seed remain.
 
-Still pending before the full discovery gate: real provider/key evaluation, curated anchors, confirmation/season models and filters, season/reopening dates, approved flame-pin artwork for markers and Share. Save a stand/local drafts, accounts/contributions and review remain subsequent slices. The November 8 reference-slice description below is historical.
+Still pending before the full discovery gate: real provider/key evaluation, curated anchors, confirmation/season models and filters, season/reopening dates, approved flame-pin artwork for markers and Share. The new inbox/draft implementation is recorded above; public auth/delivery configuration and broader moderation remain incomplete. The November 8 reference-slice description below is historical.
 
 ## Implemented reference slice
 

@@ -18,3 +18,6 @@ data/local/
 
 **/test-results/
 **/playwright-report/
+**/.wrangler/
+**/.dev.vars
+**/.dev.vars.*

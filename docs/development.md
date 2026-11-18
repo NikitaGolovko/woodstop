@@ -2,6 +2,8 @@
 
 > Local development resumed November 15, 2026. The map/list discovery foundation and fictional stand-detail reference are implemented; the expanded [MVP](mvp.md) is still in progress. Required fields and USD-only responses remain reference-model limitations.
 
+For the new JSON-backed contribution site, see [submission inbox](submission-inbox.md). Run `npm run db:inbox:local --prefix apps/web`, then `npm run dev:inbox --prefix apps/web` and open `http://127.0.0.1:8787`. This is the complete local draft/account/submission/review flow and does not need .NET/SQL Server. Allow that origin in the Geoapify key settings. The existing two-terminal .NET/Vite reference instructions below remain valid for discovery/details, but that API does not host the Cloudflare inbox.
+
 ## Map and destination search configuration
 
 For the public static sample, use `npm run build:sample --prefix apps/web` and `npm run test:sample --prefix apps/web`; see [deployment](deployment.md). These commands use bundled fictional data and do not need the API. Normal development continues to use the API below. The sample build requires a Geoapify browser key at build time.

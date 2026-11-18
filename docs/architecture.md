@@ -1,10 +1,10 @@
 # Architecture decisions and design follow-up
 
-Updated November 15, 2026. **Local development has resumed at the founder's direction.** [MVP requirements](mvp.md) govern product behavior. No infrastructure or deployment is authorized.
+Updated November 15, 2026. **Development has resumed at the founder's direction.** [MVP requirements](mvp.md) govern behavior. The founder has deployed the JSON-backed site on Cloudflare; new inbox resources/settings will be configured through their dashboard. No Azure resources are authorized for this stage.
 
 ## Baseline retained
 
-November 15 public sample follow-up: [Cloudflare Pages deployment](deployment.md) is prepared as a separate static `sample` build with checked-in fictional listings and browser-only distance filtering. The ordinary app keeps the .NET/SQL design below. This preview is not a database/provider migration, does not expose LocalDB, and does not implement the backend MVP. Cloudflare project setup, repository connection and live deployment verification are still outstanding. No Azure resources are selected or provisioned for the sample.
+November 15 delivery decision: public listings stay in checked-in JSON on the GitHub-connected Cloudflare Worker. The founder explicitly selected a small hosted submission inbox instead of provisioning Azure. [The inbox](submission-inbox.md) uses the same Worker, D1 for private accounts/submissions/photos and Better Auth for authentication. New content reaches public JSON only after review, export, commit and redeployment. Device drafts use IndexedDB. The .NET/SQL reference below remains intact and does not host this inbox. No LocalDB content or private account records are bundled publicly. Local tests and a deployment dry-run passed; hosted D1/auth setup and live end-to-end verification remain outstanding.
 
 One modular monolith: React/TypeScript/Vite frontend, C#/ASP.NET Core .NET 10 backend, EF Core SQL Server provider with NetTopologySuite, SQL Server locally. Azure App Service serving built web assets plus API, and Azure SQL, remain hosting candidates, not deployment commitments. One origin; Vite proxies API traffic locally.
 

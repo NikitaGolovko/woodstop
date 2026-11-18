@@ -5,4 +5,5 @@
 - `docs/mvp.md` is the authoritative record of the founder's current product decisions. Older planning drafts are superseded where they differ.
 - The founder resumed local development on November 15, 2026 and selected MapLibre with Geoapify. Continue the agreed MVP in incremental slices. Cloud provisioning and deployment still require explicit direction.
 - Retain the MVP's exact **Save a stand** flow. Ignore the wireframe's Local Listing Editor for now; wireframes do not override product behavior.
+- Current delivery choice: keep public listings in JSON and collect real submissions through the small Cloudflare Worker/D1 inbox. See `docs/submission-inbox.md`. The founder will configure hosted resources through the dashboard; do not provision Azure or replace the separate .NET reference as a side effect.
 - Keep the implemented stand-detail reference slice distinct from planned MVP behavior. Historical test results in the docs are not a current test run.

@@ -1,12 +1,17 @@
 {
   "name": "woodstop",
+  "main": "worker/index.ts",
+  "compatibility_flags": ["nodejs_compat"],
+  "keep_vars": true,
   "compatibility_date": "2026-11-15",
   // Rebuild in sample mode during deploy, so auto-detection cannot publish the API build.
   "build": {
     "command": "npm run build:sample"
   },
   "assets": {
+    "binding": "ASSETS",
     "directory": "./dist",
+    "run_worker_first": ["/api/*"],
     "not_found_handling": "single-page-application"
   }
 }

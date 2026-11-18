@@ -135,4 +135,6 @@ Price/payment dates stay separate; editing a description must not refresh unrela
 
 ## 10. Remaining technical work to decide before implementation
 
+November 15 delivery update: the founder chose to retain JSON-backed published listings and use a small hosted Cloudflare inbox for real submissions. The first contribution slice uses private device drafts, verified accounts, private pending records and review/export before a Git deployment publishes approved JSON. This changes the initial hosting approach, not the account/approval/privacy rules above. See [inbox setup and implementation limits](submission-inbox.md). No Azure resources are needed for this stage.
+
 MapLibre with Geoapify is selected for initial map/search integration; actual rural search quality and quota consumption need evaluation with a configured key. Remaining design work: curated anchors; local draft/photo storage and resizing; secure photo hosting/review; authentication linking/recovery and development verification stub; precise seasonal/freshness date boundaries; merge/withdraw concurrency; production hosting/budget. These do not reopen settled product choices. Local implementation has resumed; infrastructure and deployment require separate direction.

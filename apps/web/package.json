@@ -9,22 +9,30 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
-    "build:sample": "tsc --noEmit && vite build --mode sample",
+    "build:sample": "tsc --noEmit && tsc --project tsconfig.worker.json && vite build --mode sample",
+    "check:worker": "tsc --project tsconfig.worker.json",
+    "dev:inbox": "wrangler dev --config wrangler.local.jsonc --ip 127.0.0.1 --port 8787",
+    "db:inbox:local": "wrangler d1 migrations apply woodstop-inbox --local --config wrangler.local.jsonc",
+    "seed:inbox:test": "node worker/seed-test-admin.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "test": "playwright test",
-    "test:sample": "playwright test --config playwright.sample.config.ts"
+    "test:sample": "playwright test --config playwright.sample.config.ts",
+    "test:inbox": "playwright test --config playwright.inbox.config.ts"
   },
   "dependencies": {
+    "better-auth": "1.7.25",
     "maplibre-gl": "6.18.0",
     "react": "19.3.1",
     "react-dom": "19.3.1"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "5.20261116.1",
     "@playwright/test": "1.65.0",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.2.1",
     "typescript": "7.0.2",
-    "vite": "8.3.6"
+    "vite": "8.3.6",
+    "wrangler": "4.162.0"
   }
 }
